@@ -161,9 +161,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .header__logo-img {
-  height: 36px;
+  height: 48px;
   width: auto;
-  filter: brightness(0) invert(1); /* makes dark logo white on dark bg */
 }
 
 .header__logo-fallback {
@@ -1173,6 +1172,12 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--gold);
+}
+
+.footer__logo-img {
+  height: 44px;
+  width: auto;
+  margin-bottom: 8px;
 }
 
 .footer__address {
