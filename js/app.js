@@ -56,7 +56,7 @@ function initCalculator() {
     const max = parseFloat(slider.max);
     const val = parseFloat(slider.value);
     const percent = ((val - min) / (max - min)) * 100;
-    slider.style.background = `linear-gradient(to right, var(--primary) ${percent}%, #e5e7eb ${percent}%)`;
+    slider.style.background = `linear-gradient(to right, var(--gold) ${percent}%, var(--bg-elevated, #1a2540) ${percent}%)`;
   }
 
   amountSlider.addEventListener('input', updateCalculator);

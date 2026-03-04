@@ -1,32 +1,51 @@
 /* ============================================
-   РОСФИНКРЕД — Main Stylesheet
+   РОСФИНКРЕД — Premium Dark Theme
    ============================================ */
 
 /* --- CSS Variables --- */
 :root {
-  --primary: #1a56db;
-  --primary-dark: #1440a8;
-  --primary-light: #e8effc;
-  --accent: #f59e0b;
-  --accent-dark: #d97706;
+  /* Dark palette (strong contrast) */
+  --bg-darkest: #0f1623;
+  --bg-dark: #151d2e;
+  --bg-card: #1c2840;
+  --bg-card-hover: #243352;
+  --bg-elevated: #1e2f4d;
+
+  /* Gold accent */
+  --gold: #c9a24d;
+  --gold-light: #dbb866;
+  --gold-dark: #a8832e;
+  --gold-glow: rgba(201, 162, 77, 0.15);
+  --gold-glow-strong: rgba(201, 162, 77, 0.3);
+  --gold-gradient: linear-gradient(135deg, #dbb866 0%, #c9a24d 50%, #a8832e 100%);
+
+  /* Text */
+  --text-white: #f1f5f9;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dark: #1e293b;
+
+  /* Functional */
+  --primary: #c43030;
+  --primary-dark: #a82525;
   --success: #10b981;
-  --success-light: #d1fae5;
+  --success-light: rgba(16, 185, 129, 0.15);
   --danger: #ef4444;
-  --danger-light: #fee2e2;
-  --text: #1f2937;
-  --text-light: #6b7280;
-  --text-lighter: #9ca3af;
-  --bg: #ffffff;
-  --bg-light: #f8fafc;
-  --bg-gray: #f3f4f6;
-  --border: #e5e7eb;
+  --danger-light: rgba(239, 68, 68, 0.15);
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.12);
+  --border-gold: rgba(201, 162, 77, 0.4);
+
+  /* Misc */
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 20px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
-  --shadow-xl: 0 20px 50px rgba(0,0,0,0.12);
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+  --shadow-gold: 0 4px 20px rgba(201, 162, 77, 0.2);
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -40,8 +59,8 @@ html {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--text-primary);
+  background: var(--bg-darkest);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -62,12 +81,12 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-weight: 800;
   text-align: center;
   margin-bottom: 0.5rem;
-  color: var(--text);
+  color: var(--text-white);
 }
 
 .section-subtitle {
   text-align: center;
-  color: var(--text-light);
+  color: var(--text-secondary);
   font-size: 1.1rem;
   margin-bottom: 3rem;
 }
@@ -87,22 +106,23 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .btn--primary {
-  background: var(--primary);
-  color: #fff;
+  background: var(--gold-gradient);
+  color: var(--text-dark);
+  border: none;
 }
 .btn--primary:hover {
-  background: var(--primary-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-gold);
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
 
 .btn--outline {
-  border: 2px solid var(--primary);
-  color: var(--primary);
+  border: 2px solid var(--gold);
+  color: var(--gold);
   background: transparent;
 }
 .btn--outline:hover {
-  background: var(--primary-light);
+  background: var(--gold-glow);
 }
 
 .btn--large {
@@ -118,8 +138,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(17, 24, 39, 0.92);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   transition: var(--transition);
 }
@@ -137,7 +157,19 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   gap: 10px;
   font-weight: 800;
   font-size: 1.3rem;
-  color: var(--primary);
+  color: var(--gold);
+}
+
+.header__logo-img {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1); /* makes dark logo white on dark bg */
+}
+
+.header__logo-fallback {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .header__logo-icon {
@@ -146,8 +178,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: var(--primary);
-  color: #fff;
+  background: var(--gold-gradient);
+  color: var(--text-dark);
   border-radius: var(--radius-sm);
   font-size: 1.2rem;
   font-weight: 700;
@@ -161,10 +193,10 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 .header__phone {
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 1.05rem;
 }
-.header__phone:hover { color: var(--primary); }
+.header__phone:hover { color: var(--gold); }
 
 .header__burger {
   display: none;
@@ -176,70 +208,114 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   display: block;
   width: 24px;
   height: 2px;
-  background: var(--text);
+  background: var(--text-primary);
   border-radius: 2px;
   transition: var(--transition);
 }
 
 /* --- HERO --- */
 .hero {
-  padding: 140px 0 80px;
-  background: linear-gradient(135deg, #f0f5ff 0%, #e8effc 50%, #f8fafc 100%);
+  padding: 140px 0 100px;
+  background: var(--bg-darkest);
+  position: relative;
   overflow: hidden;
+}
+
+/* Subtle radial glow behind hero */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(201, 162, 77, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+  opacity: 0.4;
 }
 
 .hero__inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 60px;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .hero__title {
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.12;
   margin-bottom: 1.25rem;
+  color: var(--text-white);
+  letter-spacing: -0.02em;
 }
 
 .hero__highlight {
-  color: var(--primary);
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero__subtitle {
   font-size: 1.15rem;
-  color: var(--text-light);
+  color: var(--text-secondary);
   line-height: 1.7;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   max-width: 500px;
 }
 
 .hero__actions {
   display: flex;
   gap: 16px;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
   flex-wrap: wrap;
 }
 
 .hero__stats {
   display: flex;
-  gap: 40px;
+  gap: 48px;
 }
 
 .hero__stat {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
+.hero__stat::after {
+  content: '';
+  position: absolute;
+  right: -24px;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: var(--border);
+}
+.hero__stat:last-child::after { display: none; }
+
 .hero__stat-value {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--gold);
 }
 
 .hero__stat-label {
   font-size: 0.85rem;
-  color: var(--text-light);
+  color: var(--text-muted);
+  margin-top: 2px;
 }
 
 .hero__visual {
@@ -248,77 +324,96 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .hero__card {
-  background: #fff;
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 32px;
-  box-shadow: var(--shadow-xl);
+  padding: 36px;
+  border: 1px solid var(--border-gold);
+  box-shadow: var(--shadow-gold), var(--shadow-lg);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  position: relative;
+}
+
+/* Subtle gold shimmer top border */
+.hero__card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: var(--gold-gradient);
+  border-radius: 2px;
 }
 
 .hero__card-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
+  padding: 14px 0;
   font-size: 0.95rem;
+  color: var(--text-secondary);
 }
 
 .hero__card-old {
   font-weight: 700;
   color: var(--danger);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   text-decoration: line-through;
+  opacity: 0.9;
 }
 
 .hero__card-new {
   font-weight: 700;
-  color: var(--success);
-  font-size: 1.4rem;
+  color: var(--gold-light);
+  font-size: 1.5rem;
 }
 
 .hero__card-arrow {
   text-align: center;
   font-size: 1.5rem;
-  color: var(--primary);
+  color: var(--gold);
   padding: 8px 0;
 }
 
 .hero__card-savings {
-  margin-top: 16px;
-  padding: 12px;
+  margin-top: 20px;
+  padding: 14px;
   background: var(--success-light);
+  border: 1px solid rgba(16, 185, 129, 0.2);
   border-radius: var(--radius-sm);
   text-align: center;
-  color: #065f46;
+  color: var(--success);
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 /* --- ADVANTAGES --- */
 .advantages {
-  padding: 80px 0;
+  padding: 100px 0;
+  background: var(--bg-dark);
 }
 
 .advantages__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 .advantage-card {
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.15);
   border-radius: var(--radius);
   padding: 32px 24px;
   text-align: center;
   transition: var(--transition);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
 }
 .advantage-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary);
+  border-color: var(--border-gold);
+  box-shadow: 0 8px 30px rgba(201, 162, 77, 0.15);
 }
 
 .advantage-card__icon {
@@ -328,27 +423,39 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary-light);
+  background: var(--gold-glow);
   border-radius: 50%;
-  color: var(--primary);
+  color: var(--gold);
 }
 
 .advantage-card__title {
   font-size: 1.05rem;
   font-weight: 700;
   margin-bottom: 8px;
+  color: var(--text-white);
 }
 
 .advantage-card__text {
   font-size: 0.9rem;
-  color: var(--text-light);
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 /* --- HOW IT WORKS --- */
 .how-it-works {
-  padding: 80px 0;
-  background: var(--bg-light);
+  padding: 100px 0;
+  background: var(--bg-darkest);
+  position: relative;
+}
+
+.how-it-works::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
 }
 
 .steps {
@@ -356,7 +463,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   align-items: flex-start;
   justify-content: center;
   gap: 0;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 .step-card {
@@ -373,47 +480,51 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary);
-  color: #fff;
+  background: var(--gold-gradient);
+  color: var(--text-dark);
   border-radius: 50%;
   font-size: 1.3rem;
   font-weight: 700;
+  box-shadow: var(--shadow-gold);
 }
 
 .step-card__title {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 8px;
+  color: var(--text-white);
 }
 
 .step-card__text {
   font-size: 0.9rem;
-  color: var(--text-light);
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 .steps__connector {
   width: 60px;
   height: 2px;
-  background: var(--border);
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-glow));
   margin-top: 28px;
   flex-shrink: 0;
+  opacity: 0.5;
 }
 
 /* --- CALCULATOR --- */
 .calculator {
-  padding: 80px 0;
+  padding: 100px 0;
+  background: var(--bg-dark);
 }
 
 .calculator__body {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 40px;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.15);
   border-radius: var(--radius-lg);
-  padding: 40px;
-  box-shadow: var(--shadow-md);
+  padding: 44px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .calculator__field {
@@ -427,10 +538,11 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-weight: 600;
   margin-bottom: 12px;
   font-size: 0.95rem;
+  color: var(--text-primary);
 }
 
 .calculator__value {
-  color: var(--primary);
+  color: var(--gold);
   font-weight: 700;
   font-size: 1.1rem;
 }
@@ -439,9 +551,9 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  background: var(--bg-gray);
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-elevated);
   outline: none;
   transition: var(--transition);
 }
@@ -449,25 +561,25 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .calculator__range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: var(--primary);
+  background: var(--gold-gradient);
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(26, 86, 219, 0.3);
+  box-shadow: 0 2px 8px rgba(201, 162, 77, 0.4);
   transition: var(--transition);
 }
 .calculator__range::-webkit-slider-thumb:hover {
   transform: scale(1.15);
-  box-shadow: 0 2px 12px rgba(26, 86, 219, 0.4);
+  box-shadow: 0 2px 16px rgba(201, 162, 77, 0.5);
 }
 
 .calculator__range::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border: none;
   border-radius: 50%;
-  background: var(--primary);
+  background: var(--gold-gradient);
   cursor: pointer;
 }
 
@@ -476,12 +588,15 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   justify-content: space-between;
   margin-top: 8px;
   font-size: 0.8rem;
-  color: var(--text-lighter);
+  color: var(--text-muted);
 }
 
 .calculator__rate {
-  color: var(--text-light);
+  color: var(--text-secondary);
   font-size: 0.95rem;
+}
+.calculator__rate strong {
+  color: var(--gold);
 }
 
 .calculator__result {
@@ -489,16 +604,29 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
   border-radius: var(--radius);
   padding: 40px;
-  color: #fff;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle gold top line */
+.calculator__result::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: var(--gold-gradient);
 }
 
 .calculator__result-label {
   font-size: 0.95rem;
-  opacity: 0.85;
+  color: var(--text-secondary);
   margin-bottom: 8px;
 }
 
@@ -506,86 +634,115 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-size: 2.8rem;
   font-weight: 800;
   margin-bottom: 4px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .calculator__result-sub {
   font-size: 0.9rem;
-  opacity: 0.7;
+  color: var(--text-muted);
   margin-bottom: 24px;
 }
 
 .calculator__cta {
-  background: #fff;
-  color: var(--primary);
+  background: var(--gold-gradient);
+  color: var(--text-dark);
   font-weight: 700;
 }
 .calculator__cta:hover {
-  background: #f0f5ff;
+  filter: brightness(1.1);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-gold);
 }
 
 /* --- FEATURES --- */
 .features {
-  padding: 80px 0;
-  background: var(--bg-light);
+  padding: 100px 0;
+  background: var(--bg-darkest);
+  position: relative;
+}
+
+.features::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
 }
 
 .features__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 .feature-item {
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  padding: 24px;
-  background: var(--bg);
+  padding: 28px;
+  background: var(--bg-card);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: var(--transition);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.feature-item:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 4px 20px rgba(201, 162, 77, 0.12);
 }
 
 .feature-item__icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--success-light);
-  color: var(--success);
+  background: var(--gold-glow);
+  color: var(--gold);
   border-radius: 50%;
   font-weight: 700;
   flex-shrink: 0;
+  font-size: 1.1rem;
 }
 
 .feature-item__title {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 4px;
+  color: var(--text-white);
 }
 
 .feature-item__text {
   font-size: 0.9rem;
-  color: var(--text-light);
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 /* --- FORM SECTION --- */
 .form-section {
-  padding: 80px 0;
+  padding: 100px 0;
+  background: var(--bg-dark);
 }
 
-/* --- WIZARD --- */
+.form-section .section-title {
+  color: var(--text-white);
+}
+
+/* --- WIZARD (stays light for readability) --- */
 .wizard {
   max-width: 640px;
   margin: 0 auto;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: #ffffff;
   border-radius: var(--radius-lg);
   padding: 40px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  color: #1e293b;
 }
 
 .wizard__progress {
@@ -594,7 +751,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 .wizard__progress-bar {
   height: 6px;
-  background: var(--bg-gray);
+  background: #e5e7eb;
   border-radius: 3px;
   overflow: hidden;
   position: relative;
@@ -606,7 +763,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   left: 0;
   height: 100%;
   width: var(--progress, 14.28%);
-  background: var(--primary);
+  background: var(--gold-gradient);
   border-radius: 3px;
   transition: width 0.5s ease;
 }
@@ -614,7 +771,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .wizard__progress-text {
   text-align: center;
   font-size: 0.85rem;
-  color: var(--text-lighter);
+  color: #9ca3af;
   margin-top: 8px;
 }
 
@@ -643,6 +800,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-weight: 700;
   margin-bottom: 24px;
   line-height: 1.5;
+  color: #1e293b;
 }
 
 /* Option buttons */
@@ -661,24 +819,24 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
-  border: 2px solid var(--border);
+  border: 2px solid #e5e7eb;
   border-radius: var(--radius-sm);
   font-size: 1rem;
   font-weight: 500;
-  color: var(--text);
-  background: var(--bg);
+  color: #1e293b;
+  background: #fff;
   transition: var(--transition);
   width: 100%;
   text-align: left;
 }
 .wizard__option-btn:hover {
-  border-color: var(--primary);
-  background: var(--primary-light);
+  border-color: var(--gold);
+  background: rgba(201, 162, 77, 0.06);
 }
 .wizard__option-btn.selected {
-  border-color: var(--primary);
-  background: var(--primary-light);
-  color: var(--primary);
+  border-color: var(--gold);
+  background: rgba(201, 162, 77, 0.08);
+  color: var(--gold-dark);
   font-weight: 600;
 }
 
@@ -690,8 +848,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .wizard__option-btn--secondary {
-  border-color: var(--border);
-  color: var(--text-light);
+  border-color: #e5e7eb;
+  color: #6b7280;
   font-weight: 500;
   font-size: 0.95rem;
 }
@@ -699,14 +857,14 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .wizard__option-radio {
   width: 20px;
   height: 20px;
-  border: 2px solid var(--border);
+  border: 2px solid #e5e7eb;
   border-radius: 50%;
   flex-shrink: 0;
   position: relative;
   transition: var(--transition);
 }
 .selected .wizard__option-radio {
-  border-color: var(--primary);
+  border-color: var(--gold);
 }
 .selected .wizard__option-radio::after {
   content: '';
@@ -715,8 +873,22 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   left: 3px;
   width: 10px;
   height: 10px;
-  background: var(--primary);
+  background: var(--gold);
   border-radius: 50%;
+}
+
+/* Wizard buttons overrides (inside light wizard) */
+.wizard .btn--primary {
+  background: var(--gold-gradient);
+  color: var(--text-dark);
+}
+.wizard .btn--outline {
+  border-color: #d1d5db;
+  color: #6b7280;
+}
+.wizard .btn--outline:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
 }
 
 /* Input fields */
@@ -729,7 +901,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-weight: 600;
   font-size: 0.9rem;
   margin-bottom: 8px;
-  color: var(--text);
+  color: #374151;
 }
 
 .wizard__input-wrapper {
@@ -741,20 +913,20 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .wizard__input {
   width: 100%;
   padding: 14px 16px;
-  border: 2px solid var(--border);
+  border: 2px solid #e5e7eb;
   border-radius: var(--radius-sm);
   font-size: 1rem;
-  color: var(--text);
+  color: #1e293b;
   transition: var(--transition);
   outline: none;
-  background: var(--bg);
+  background: #fff;
 }
 .wizard__input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 77, 0.1);
 }
 .wizard__input::placeholder {
-  color: var(--text-lighter);
+  color: #9ca3af;
 }
 
 .wizard__input--with-prefix {
@@ -764,7 +936,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .wizard__input-prefix {
   position: absolute;
   left: 14px;
-  color: var(--text-light);
+  color: #6b7280;
   font-weight: 600;
   z-index: 1;
 }
@@ -772,18 +944,18 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .wizard__input-suffix {
   position: absolute;
   right: 14px;
-  color: var(--text-light);
+  color: #6b7280;
   font-size: 0.9rem;
 }
 
 .wizard__select {
   width: 100%;
   padding: 14px 16px;
-  border: 2px solid var(--border);
+  border: 2px solid #e5e7eb;
   border-radius: var(--radius-sm);
   font-size: 1rem;
-  color: var(--text);
-  background: var(--bg);
+  color: #1e293b;
+  background: #fff;
   outline: none;
   transition: var(--transition);
   cursor: pointer;
@@ -795,8 +967,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   padding-right: 40px;
 }
 .wizard__select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 77, 0.1);
 }
 
 /* Form fields */
@@ -817,7 +989,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   gap: 10px;
   cursor: pointer;
   font-size: 0.9rem;
-  color: var(--text-light);
+  color: #6b7280;
   line-height: 1.4;
 }
 .wizard__checkbox input {
@@ -826,7 +998,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .wizard__checkbox-mark {
   width: 20px;
   height: 20px;
-  border: 2px solid var(--border);
+  border: 2px solid #e5e7eb;
   border-radius: 4px;
   flex-shrink: 0;
   position: relative;
@@ -834,8 +1006,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   margin-top: 1px;
 }
 .wizard__checkbox input:checked + .wizard__checkbox-mark {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: var(--gold);
+  border-color: var(--gold);
 }
 .wizard__checkbox input:checked + .wizard__checkbox-mark::after {
   content: '';
@@ -849,7 +1021,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   transform: rotate(45deg);
 }
 .wizard__checkbox-text a {
-  color: var(--primary);
+  color: var(--gold-dark);
   text-decoration: underline;
 }
 
@@ -878,7 +1050,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--danger-light);
+  background: #fee2e2;
   color: var(--danger);
   border-radius: 50%;
   font-size: 1.5rem;
@@ -889,11 +1061,11 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 12px;
-  color: var(--text);
+  color: #1e293b;
 }
 
 .wizard__stop-text {
-  color: var(--text-light);
+  color: #6b7280;
   margin-bottom: 24px;
   line-height: 1.6;
 }
@@ -903,7 +1075,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   text-align: center;
   margin-bottom: 28px;
   padding: 24px;
-  background: var(--success-light);
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
   border-radius: var(--radius);
 }
 
@@ -948,7 +1121,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--success-light);
+  background: rgba(16, 185, 129, 0.1);
   color: var(--success);
   border-radius: 50%;
   font-size: 2rem;
@@ -959,10 +1132,11 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 12px;
+  color: #1e293b;
 }
 
 .wizard__success-text {
-  color: var(--text-light);
+  color: #6b7280;
   margin-bottom: 28px;
   font-size: 1.05rem;
   line-height: 1.6;
@@ -982,9 +1156,9 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 /* --- FOOTER --- */
 .footer {
-  padding: 40px 0;
-  background: var(--text);
-  color: #fff;
+  padding: 48px 0;
+  background: var(--bg-darkest);
+  border-top: 1px solid var(--border);
 }
 
 .footer__inner {
@@ -998,20 +1172,21 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .footer__logo {
   font-weight: 700;
   font-size: 1.1rem;
+  color: var(--gold);
 }
 
 .footer__address {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.6);
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
 .footer__phone {
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 1.1rem;
 }
-.footer__phone:hover { color: var(--accent); }
+.footer__phone:hover { color: var(--gold); }
 
 .footer__legal {
   text-align: right;
@@ -1019,15 +1194,16 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 .footer__link {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.6);
+  color: var(--text-muted);
   display: block;
   margin-bottom: 4px;
 }
-.footer__link:hover { color: #fff; }
+.footer__link:hover { color: var(--gold); }
 
 .footer__copy {
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-muted);
+  opacity: 0.6;
 }
 
 /* --- SCROLL ANIMATIONS --- */
@@ -1054,8 +1230,9 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   .hero__subtitle { max-width: 100%; }
   .hero__actions { justify-content: center; }
   .hero__stats { justify-content: center; }
+  .hero__stat::after { display: none; }
   .hero__visual { order: -1; }
-  .hero__card { max-width: 360px; }
+  .hero__card { max-width: 380px; }
 
   .advantages__grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1084,10 +1261,10 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     top: 72px;
     left: 0;
     right: 0;
-    background: #fff;
+    background: var(--bg-dark);
     padding: 20px;
     border-bottom: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
     gap: 16px;
     animation: fadeInUp 0.3s ease;
   }
@@ -1095,7 +1272,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   .hero {
     padding: 100px 0 60px;
   }
-  .hero__title { font-size: 2rem; }
+  .hero__title { font-size: 2.2rem; }
   .hero__stats { gap: 24px; }
 
   .steps {
@@ -1130,7 +1307,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 
 @media (max-width: 480px) {
-  .hero__title { font-size: 1.7rem; }
+  .hero__title { font-size: 1.8rem; }
   .hero__actions { flex-direction: column; }
   .hero__actions .btn { width: 100%; }
   .hero__stats { flex-wrap: wrap; justify-content: center; }
