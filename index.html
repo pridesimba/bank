@@ -24,7 +24,7 @@
       </a>
       <div class="header__right">
         <a href="tel:+70000000000" class="header__phone">+7(***) ***-**-**</a>
-        <a href="#application-form" class="btn btn--primary header__cta">Оформление кредита всем</a>
+        <button class="btn btn--primary header__cta" onclick="openModal('refinance')">Оформить кредит</button>
       </div>
       <button class="header__burger" id="burger" aria-label="Меню">
         <span></span><span></span><span></span>
@@ -39,8 +39,8 @@
         <h1 class="hero__title">Рефинансирование кредитов <span class="hero__highlight">от 2.5%</span></h1>
         <p class="hero__subtitle">Снизьте ежемесячный платёж и объедините все кредиты в один. Без справок о доходах, решение за 1 день.</p>
         <div class="hero__actions">
-          <a href="#application-form" class="btn btn--primary btn--large" onclick="switchFormTab('refinance')">Рефинансирование</a>
-          <a href="#application-form" class="btn btn--gold btn--large" onclick="switchFormTab('credit')">Оформление кредита всем</a>
+          <button class="btn btn--primary btn--large" onclick="openModal('refinance')">Рефинансирование</button>
+          <button class="btn btn--gold btn--large" onclick="openModal('credit')">Оформление кредита всем</button>
           <a href="#calculator" class="btn btn--outline btn--large">Рассчитать платёж</a>
         </div>
         <div class="hero__stats">
@@ -56,20 +56,6 @@
             <span class="hero__stat-value">1 день</span>
             <span class="hero__stat-label">решение</span>
           </div>
-        </div>
-      </div>
-      <div class="hero__visual">
-        <div class="hero__card">
-          <div class="hero__card-row">
-            <span>Ваш платёж сейчас</span>
-            <span class="hero__card-old">32 000 ₽/мес</span>
-          </div>
-          <div class="hero__card-arrow">↓</div>
-          <div class="hero__card-row">
-            <span>Платёж после рефинансирования</span>
-            <span class="hero__card-new">18 500 ₽/мес</span>
-          </div>
-          <div class="hero__card-savings">Экономия: 13 500 ₽ в месяц</div>
         </div>
       </div>
     </div>
@@ -179,7 +165,7 @@
           <div class="calculator__result-label">Ежемесячный платёж</div>
           <div class="calculator__result-value" id="calc-result">10 853 ₽</div>
           <div class="calculator__result-sub">в месяц</div>
-          <a href="#application-form" class="btn btn--primary btn--large calculator__cta">Оформить на этих условиях</a>
+          <button class="btn btn--primary btn--large calculator__cta" onclick="openModal('refinance')">Оформить на этих условиях</button>
         </div>
       </div>
     </div>
@@ -215,16 +201,17 @@
     </div>
   </section>
 
-  <!-- APPLICATION FORM -->
-  <section class="form-section" id="application-form">
-    <div class="container">
-      <h2 class="section-title">Оформить заявку</h2>
-      <p class="section-subtitle">Заполните короткую анкету — это займёт 2 минуты</p>
+  <!-- MODAL OVERLAY -->
+  <div class="modal-overlay" id="modal-overlay" style="display:none;">
+    <div class="modal">
+      <button class="modal__close" onclick="closeModal()">&times;</button>
+      <h2 class="modal__title">Оформить заявку</h2>
+      <p class="modal__subtitle">Заполните короткую анкету — это займёт 2 минуты</p>
 
       <!-- FORM TABS -->
       <div class="form-tabs">
         <button class="form-tabs__btn active" data-tab="refinance" onclick="switchFormTab('refinance')">Рефинансирование</button>
-        <button class="form-tabs__btn" data-tab="credit" onclick="switchFormTab('credit')">Взять кредит</button>
+        <button class="form-tabs__btn" data-tab="credit" onclick="switchFormTab('credit')">Оформление кредита</button>
       </div>
 
       <div class="wizard" id="wizard">
@@ -552,7 +539,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- FOOTER -->
   <footer class="footer" id="footer">
