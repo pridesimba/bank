@@ -181,13 +181,8 @@ function saveAndNext(key, value) {
 
 // ---- STEP 4: Auto loan ----
 function handleAutoLoan(hasAutoLoan) {
-  if (hasAutoLoan) {
-    formData.autoLoan = 'Да';
-    goToStep('4-stop');
-  } else {
-    formData.autoLoan = 'Нет';
-    nextStep();
-  }
+  formData.autoLoan = hasAutoLoan ? 'Да' : 'Нет';
+  nextStep();
 }
 
 // ---- STEP 5: Property ----
