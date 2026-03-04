@@ -39,7 +39,8 @@
         <h1 class="hero__title">Рефинансирование кредитов <span class="hero__highlight">от 2.5%</span></h1>
         <p class="hero__subtitle">Снизьте ежемесячный платёж и объедините все кредиты в один. Без справок о доходах, решение за 1 день.</p>
         <div class="hero__actions">
-          <a href="#application-form" class="btn btn--primary btn--large">Подать заявку онлайн</a>
+          <a href="#application-form" class="btn btn--primary btn--large" onclick="switchFormTab('refinance')">Рефинансирование</a>
+          <a href="#application-form" class="btn btn--gold btn--large" onclick="switchFormTab('credit')">Взять кредит</a>
           <a href="#calculator" class="btn btn--outline btn--large">Рассчитать платёж</a>
         </div>
         <div class="hero__stats">
@@ -220,6 +221,12 @@
       <h2 class="section-title">Оформить заявку</h2>
       <p class="section-subtitle">Заполните короткую анкету — это займёт 2 минуты</p>
 
+      <!-- FORM TABS -->
+      <div class="form-tabs">
+        <button class="form-tabs__btn active" data-tab="refinance" onclick="switchFormTab('refinance')">Рефинансирование</button>
+        <button class="form-tabs__btn" data-tab="credit" onclick="switchFormTab('credit')">Взять кредит</button>
+      </div>
+
       <div class="wizard" id="wizard">
         <!-- Progress Bar -->
         <div class="wizard__progress">
@@ -397,6 +404,147 @@
           <div class="wizard__success-icon">✓</div>
           <h3 class="wizard__success-title">Поздравляем!</h3>
           <p class="wizard__success-text">Ваша заявка успешно принята. Мы свяжемся с вами в ближайшее время.</p>
+          <a href="https://t.me/clackson_tg" target="_blank" class="btn btn--primary btn--large wizard__success-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.053 5.56-5.023c.242-.213-.054-.334-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.128.832.942z"/></svg>
+            Написать менеджеру
+          </a>
+        </div>
+      </div>
+
+      <!-- CREDIT WIZARD -->
+      <div class="wizard" id="credit-wizard" style="display:none;">
+        <!-- Progress Bar -->
+        <div class="wizard__progress">
+          <div class="wizard__progress-bar" id="credit-progress-bar"></div>
+          <div class="wizard__progress-text" id="credit-progress-text">Шаг 1 из 4</div>
+        </div>
+
+        <!-- Credit Step 1: Цель кредита -->
+        <div class="wizard__step active" data-step="c1">
+          <h3 class="wizard__question">Укажите цель кредита</h3>
+          <div class="wizard__options wizard__options--vertical">
+            <button class="wizard__option-btn" data-value="Потребительский кредит" onclick="creditSelectOption(this, 'creditPurpose')">
+              <span class="wizard__option-radio"></span>
+              Потребительский кредит
+            </button>
+            <button class="wizard__option-btn" data-value="Ипотека" onclick="creditSelectOption(this, 'creditPurpose')">
+              <span class="wizard__option-radio"></span>
+              Ипотека
+            </button>
+            <button class="wizard__option-btn" data-value="На бизнес" onclick="creditSelectOption(this, 'creditPurpose')">
+              <span class="wizard__option-radio"></span>
+              На бизнес
+            </button>
+            <button class="wizard__option-btn" data-value="Другое" onclick="creditSelectOption(this, 'creditPurpose')">
+              <span class="wizard__option-radio"></span>
+              Другое
+            </button>
+          </div>
+          <button class="btn btn--primary wizard__next" id="credit-next-1" disabled onclick="creditNextStep()">Далее</button>
+        </div>
+
+        <!-- Credit Step 2: Сумма -->
+        <div class="wizard__step" data-step="c2">
+          <h3 class="wizard__question">Укажите желаемую сумму кредита</h3>
+          <div class="wizard__options wizard__options--vertical">
+            <button class="wizard__option-btn" data-value="100 000 — 500 000 ₽" onclick="creditSelectOption(this, 'creditAmount')">
+              <span class="wizard__option-radio"></span>
+              100 000 — 500 000 ₽
+            </button>
+            <button class="wizard__option-btn" data-value="500 000 — 1 000 000 ₽" onclick="creditSelectOption(this, 'creditAmount')">
+              <span class="wizard__option-radio"></span>
+              500 000 — 1 000 000 ₽
+            </button>
+            <button class="wizard__option-btn" data-value="1 000 000 — 3 000 000 ₽" onclick="creditSelectOption(this, 'creditAmount')">
+              <span class="wizard__option-radio"></span>
+              1 000 000 — 3 000 000 ₽
+            </button>
+          </div>
+          <div class="wizard__nav">
+            <button class="btn btn--outline wizard__back" onclick="creditPrevStep()">Назад</button>
+            <button class="btn btn--primary wizard__next" id="credit-next-2" disabled onclick="creditNextStep()">Далее</button>
+          </div>
+        </div>
+
+        <!-- Credit Step 3: Регион РФ -->
+        <div class="wizard__step" data-step="c3">
+          <h3 class="wizard__question">Мы работаем только с проживающими в Российской Федерации. Пожалуйста, подтвердите ваше согласие с этими условиями.</h3>
+          <div class="wizard__options wizard__options--vertical">
+            <button class="wizard__option-btn wizard__option-btn--choice" onclick="creditHandleRegion(true)">Согласен</button>
+            <button class="wizard__option-btn wizard__option-btn--choice wizard__option-btn--secondary" onclick="creditHandleRegion(false)">Не согласен, я из другого региона</button>
+          </div>
+          <button class="btn btn--outline wizard__back wizard__back--center" onclick="creditPrevStep()">Назад</button>
+        </div>
+
+        <!-- Credit Step 3 STOP -->
+        <div class="wizard__step wizard__stop" data-step="c3-stop" style="display:none;">
+          <div class="wizard__stop-icon">✕</div>
+          <h3 class="wizard__stop-title">К сожалению, мы не можем обработать вашу заявку</h3>
+          <p class="wizard__stop-text">Наша программа кредитования доступна только для проживающих в Российской Федерации.</p>
+          <button class="btn btn--outline" onclick="resetCreditWizard()">Закрыть</button>
+        </div>
+
+        <!-- Credit Step 4: Контакты -->
+        <div class="wizard__step" data-step="c4">
+          <div class="wizard__approval">
+            <div class="wizard__approval-badge">
+              <span class="wizard__approval-icon">✓</span>
+              <span>Вероятность одобрения вашей заявки</span>
+            </div>
+            <div class="wizard__approval-value" id="credit-approval-chance">91%</div>
+          </div>
+
+          <h3 class="wizard__question">Укажите как удобнее получить решение</h3>
+
+          <div class="wizard__form">
+            <div class="wizard__form-field">
+              <label class="wizard__input-label">Укажите способ связи</label>
+              <select id="credit-contact-method" class="wizard__select" onchange="toggleCreditTelegramField()">
+                <option value="" disabled selected>Выберите способ связи</option>
+                <option value="Telegram">Telegram</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Звонок сотрудника РОСФИНКРЕД">Звонок сотрудника РОСФИНКРЕД</option>
+              </select>
+            </div>
+
+            <div class="wizard__form-field" id="credit-telegram-field" style="display:none;">
+              <label class="wizard__input-label">Ваш username в Telegram (при наличии)</label>
+              <div class="wizard__input-wrapper">
+                <span class="wizard__input-prefix">@</span>
+                <input type="text" id="credit-telegram-username" class="wizard__input wizard__input--with-prefix" placeholder="username">
+              </div>
+            </div>
+
+            <div class="wizard__form-field">
+              <label class="wizard__input-label">Ваш номер телефона</label>
+              <input type="tel" id="credit-phone" class="wizard__input" placeholder="+7(___) ___-__-__" maxlength="18">
+            </div>
+
+            <div class="wizard__form-field">
+              <label class="wizard__input-label">ФИО</label>
+              <input type="text" id="credit-full-name" class="wizard__input" placeholder="Иванов Иван Иванович">
+            </div>
+
+            <div class="wizard__form-field wizard__form-field--checkbox">
+              <label class="wizard__checkbox">
+                <input type="checkbox" id="credit-consent">
+                <span class="wizard__checkbox-mark"></span>
+                <span class="wizard__checkbox-text">Я соглашаюсь на <a href="#" onclick="event.preventDefault()">обработку персональных данных</a></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="wizard__nav">
+            <button class="btn btn--outline wizard__back" onclick="creditPrevStep()">Назад</button>
+            <button class="btn btn--primary wizard__next" id="credit-submit-btn" onclick="submitCreditApplication()">Отправить заявку</button>
+          </div>
+        </div>
+
+        <!-- CREDIT SUCCESS SCREEN -->
+        <div class="wizard__step wizard__success" data-step="c-success" style="display:none;">
+          <div class="wizard__success-icon">✓</div>
+          <h3 class="wizard__success-title">Поздравляем!</h3>
+          <p class="wizard__success-text">Ваша заявка на кредит успешно принята. Мы свяжемся с вами в ближайшее время.</p>
           <a href="https://t.me/clackson_tg" target="_blank" class="btn btn--primary btn--large wizard__success-btn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.053 5.56-5.023c.242-.213-.054-.334-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.128.832.942z"/></svg>
             Написать менеджеру

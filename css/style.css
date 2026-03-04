@@ -125,6 +125,18 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   background: var(--gold-glow);
 }
 
+.btn--gold {
+  background: var(--gold-gradient);
+  color: var(--text-dark);
+  font-weight: 700;
+  border: none;
+}
+.btn--gold:hover {
+  box-shadow: var(--shadow-gold);
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
 .btn--large {
   padding: 16px 36px;
   font-size: 1.05rem;
@@ -731,6 +743,35 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 .form-section .section-title {
   color: var(--text-white);
+}
+
+/* --- FORM TABS --- */
+.form-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.form-tabs__btn {
+  padding: 14px 32px;
+  border: 2px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.form-tabs__btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.form-tabs__btn.active {
+  background: var(--gold-gradient);
+  color: var(--text-dark);
+  border-color: transparent;
+  box-shadow: var(--shadow-gold);
 }
 
 /* --- WIZARD (stays light for readability) --- */
