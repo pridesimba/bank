@@ -237,6 +237,16 @@
               <span class="wizard__option-radio"></span>
               1 000 000 — 3 000 000 ₽
             </button>
+            <button class="wizard__option-btn" data-value="custom" onclick="selectCustomAmount(this, 'loanAmount', 'custom-loan-input')">
+              <span class="wizard__option-radio"></span>
+              Своя сумма
+            </button>
+            <div class="wizard__custom-input" id="custom-loan-wrap" style="display:none;">
+              <div class="wizard__input-wrapper">
+                <input type="text" class="wizard__input" id="custom-loan-input" placeholder="Например, 224 543" inputmode="numeric">
+                <span class="wizard__input-suffix">₽</span>
+              </div>
+            </div>
           </div>
           <button class="btn btn--primary wizard__next" id="next-1" disabled onclick="nextStep()">Далее</button>
         </div>
@@ -446,6 +456,16 @@
               <span class="wizard__option-radio"></span>
               1 000 000 — 3 000 000 ₽
             </button>
+            <button class="wizard__option-btn" data-value="custom" onclick="selectCustomAmount(this, 'creditAmount', 'custom-credit-input', true)">
+              <span class="wizard__option-radio"></span>
+              Своя сумма
+            </button>
+            <div class="wizard__custom-input" id="custom-credit-wrap" style="display:none;">
+              <div class="wizard__input-wrapper">
+                <input type="text" class="wizard__input" id="custom-credit-input" placeholder="Например, 224 543" inputmode="numeric">
+                <span class="wizard__input-suffix">₽</span>
+              </div>
+            </div>
           </div>
           <div class="wizard__nav">
             <button class="btn btn--outline wizard__back" onclick="creditPrevStep()">Назад</button>

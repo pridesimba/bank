@@ -132,6 +132,9 @@ function resetWizard() {
   const inputs = document.querySelectorAll('.wizard__input, .wizard__select');
   inputs.forEach(input => { input.value = ''; });
 
+  const customLoanWrap = document.getElementById('custom-loan-wrap');
+  if (customLoanWrap) customLoanWrap.style.display = 'none';
+
   const consent = document.getElementById('consent');
   if (consent) consent.checked = false;
 
@@ -152,9 +155,78 @@ function selectOption(btn, key) {
   btn.classList.add('selected');
   formData[key] = btn.dataset.value;
 
+  // Hide custom input if a preset was chosen
+  const customWrap = btn.closest('.wizard__step')?.querySelector('.wizard__custom-input');
+  if (customWrap) customWrap.style.display = 'none';
+
   // Enable next button
   const nextBtn = document.getElementById('next-' + currentStep);
   if (nextBtn) nextBtn.disabled = false;
+}
+
+function bindCustomAmountInput(input, key, nextBtn, dataObj, advanceFn) {
+  if (!input) return;
+
+  const syncValue = (raw) => {
+    const digits = raw.replace(/\D/g, '');
+    if (!digits) {
+      if (nextBtn) nextBtn.disabled = true;
+      delete dataObj[key];
+      return '';
+    }
+    const formatted = parseInt(digits, 10).toLocaleString('ru-RU');
+    dataObj[key] = formatted + ' ₽';
+    if (nextBtn) nextBtn.disabled = false;
+    return formatted;
+  };
+
+  // Prevent duplicate listeners while still syncing state
+  if (input.dataset.bound === 'true') {
+    input.value = syncValue(input.value);
+    return;
+  }
+
+  input.addEventListener('input', (e) => {
+    e.target.value = syncValue(e.target.value);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const formatted = syncValue(e.target.value);
+      if (formatted && typeof advanceFn === 'function') {
+        e.preventDefault();
+        advanceFn();
+      }
+    }
+  });
+
+  input.dataset.bound = 'true';
+  input.value = syncValue(input.value);
+}
+
+// ---- CUSTOM AMOUNT ----
+function selectCustomAmount(btn, key, inputId, isCredit) {
+  // Deselect siblings
+  btn.parentElement.querySelectorAll('.wizard__option-btn').forEach(b => {
+    b.classList.remove('selected');
+  });
+  btn.classList.add('selected');
+
+  // Show custom input
+  const wrap = btn.closest('.wizard__step')?.querySelector('.wizard__custom-input');
+  if (wrap) wrap.style.display = 'block';
+
+  const input = document.getElementById(inputId);
+  const nextBtn = isCredit
+    ? document.getElementById('credit-next-' + creditCurrentStep)
+    : document.getElementById('next-' + currentStep);
+  const dataObj = isCredit ? creditFormData : formData;
+
+  if (input) {
+    bindCustomAmountInput(input, key, nextBtn, dataObj, isCredit ? creditNextStep : nextStep);
+    if (nextBtn) nextBtn.disabled = !input.value.replace(/\D/g, '');
+    input.focus();
+  }
 }
 
 // ---- STEP 2: Save payment ----
@@ -473,6 +545,10 @@ function creditSelectOption(btn, key) {
   btn.classList.add('selected');
   creditFormData[key] = btn.dataset.value;
 
+  // Hide custom input if a preset was chosen
+  const customWrap = btn.closest('.wizard__step')?.querySelector('.wizard__custom-input');
+  if (customWrap) customWrap.style.display = 'none';
+
   const nextBtn = document.getElementById('credit-next-' + creditCurrentStep);
   if (nextBtn) nextBtn.disabled = false;
 }
@@ -506,6 +582,9 @@ function resetCreditWizard() {
   wizard.querySelectorAll('.wizard__input, .wizard__select').forEach(input => {
     input.value = '';
   });
+
+  const customCreditWrap = document.getElementById('custom-credit-wrap');
+  if (customCreditWrap) customCreditWrap.style.display = 'none';
 
   const consent = document.getElementById('credit-consent');
   if (consent) consent.checked = false;
