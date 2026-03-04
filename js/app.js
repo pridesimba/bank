@@ -28,7 +28,7 @@ function initCalculator() {
   }
 
   function calcPayment(amount, years, rate) {
-    rate = rate || 5.5;
+    rate = rate || 2.5;
     const monthlyRate = rate / 100 / 12;
     const months = years * 12;
     if (monthlyRate === 0) return Math.round(amount / months);
