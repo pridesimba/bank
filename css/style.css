@@ -161,7 +161,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .header__logo-img {
-  height: 48px;
+  height: 192px;
   width: auto;
 }
 
@@ -1175,7 +1175,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .footer__logo-img {
-  height: 44px;
+  height: 176px;
   width: auto;
   margin-bottom: 8px;
 }
