@@ -140,9 +140,7 @@ function resetWizard() {
   if (next1) next1.disabled = true;
 
   goToStep(1);
-
-  // Scroll to form
-  document.getElementById('application-form').scrollIntoView({ behavior: 'smooth' });
+  closeModal();
 }
 
 // ---- STEP 1: Select option ----
@@ -364,6 +362,34 @@ async function submitApplication() {
   }
 }
 
+// ---- MODAL ----
+function openModal(tab) {
+  const overlay = document.getElementById('modal-overlay');
+  overlay.style.display = 'flex';
+  document.body.classList.add('modal-open');
+  switchFormTab(tab || 'refinance');
+}
+
+function closeModal() {
+  const overlay = document.getElementById('modal-overlay');
+  overlay.style.display = 'none';
+  document.body.classList.remove('modal-open');
+}
+
+// Close modal on backdrop click
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.id === 'modal-overlay') {
+    closeModal();
+  }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+  }
+});
+
 // ---- FORM TABS ----
 let activeFormTab = 'refinance';
 
@@ -490,7 +516,7 @@ function resetCreditWizard() {
   if (next2) next2.disabled = true;
 
   creditGoToStep(1);
-  document.getElementById('application-form').scrollIntoView({ behavior: 'smooth' });
+  closeModal();
 }
 
 async function submitCreditApplication() {
