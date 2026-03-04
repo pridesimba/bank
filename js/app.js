@@ -336,6 +336,7 @@ async function submitApplication() {
   formData.contactMethod = contactMethod;
   formData.phone = phone;
   formData.fullName = fullName;
+  formData.formType = 'refinance';
   if (contactMethod === 'Telegram' && telegramUsername) {
     formData.telegramUsername = telegramUsername;
   }
@@ -366,6 +367,225 @@ async function submitApplication() {
     submitBtn.disabled = false;
     submitBtn.textContent = originalText;
   }
+}
+
+// ---- FORM TABS ----
+let activeFormTab = 'refinance';
+
+function switchFormTab(tab) {
+  activeFormTab = tab;
+  const refinanceWizard = document.getElementById('wizard');
+  const creditWizard = document.getElementById('credit-wizard');
+  const tabs = document.querySelectorAll('.form-tabs__btn');
+
+  tabs.forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+
+  if (tab === 'refinance') {
+    refinanceWizard.style.display = 'block';
+    creditWizard.style.display = 'none';
+  } else {
+    refinanceWizard.style.display = 'none';
+    creditWizard.style.display = 'block';
+  }
+}
+
+// ---- CREDIT WIZARD ----
+const creditFormData = {};
+let creditCurrentStep = 1;
+const creditTotalSteps = 4;
+
+function creditGoToStep(step) {
+  const wizard = document.getElementById('credit-wizard');
+  wizard.querySelectorAll('.wizard__step').forEach(el => {
+    el.classList.remove('active');
+    el.style.display = 'none';
+  });
+
+  const stepValue = typeof step === 'string' ? step : 'c' + step;
+  const target = wizard.querySelector(`.wizard__step[data-step="${stepValue}"]`);
+  if (target) {
+    target.style.display = 'block';
+    void target.offsetWidth;
+    target.classList.add('active');
+  }
+
+  if (typeof step === 'number') {
+    creditCurrentStep = step;
+  }
+
+  updateCreditProgress();
+
+  if (step === 4 || step === '4') {
+    const chance = Math.floor(Math.random() * 18) + 80;
+    creditFormData.approvalChance = chance;
+    const el = document.getElementById('credit-approval-chance');
+    if (el) el.textContent = chance + '%';
+  }
+}
+
+function updateCreditProgress() {
+  const bar = document.getElementById('credit-progress-bar');
+  const text = document.getElementById('credit-progress-text');
+  if (!bar || !text) return;
+
+  const percent = (creditCurrentStep / creditTotalSteps) * 100;
+  bar.style.setProperty('--progress', percent + '%');
+  text.textContent = `Шаг ${creditCurrentStep} из ${creditTotalSteps}`;
+}
+
+function creditNextStep() {
+  creditGoToStep(creditCurrentStep + 1);
+}
+
+function creditPrevStep() {
+  if (creditCurrentStep > 1) {
+    creditGoToStep(creditCurrentStep - 1);
+  }
+}
+
+function creditSelectOption(btn, key) {
+  btn.parentElement.querySelectorAll('.wizard__option-btn').forEach(b => {
+    b.classList.remove('selected');
+  });
+  btn.classList.add('selected');
+  creditFormData[key] = btn.dataset.value;
+
+  const nextBtn = document.getElementById('credit-next-' + creditCurrentStep);
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+function creditHandleRegion(agrees) {
+  if (agrees) {
+    creditFormData.region = 'РФ';
+    creditNextStep();
+  } else {
+    creditFormData.region = 'Другой регион';
+    creditGoToStep('c3-stop');
+  }
+}
+
+function toggleCreditTelegramField() {
+  const select = document.getElementById('credit-contact-method');
+  const field = document.getElementById('credit-telegram-field');
+  if (field) {
+    field.style.display = select.value === 'Telegram' ? 'block' : 'none';
+  }
+}
+
+function resetCreditWizard() {
+  Object.keys(creditFormData).forEach(key => delete creditFormData[key]);
+  creditCurrentStep = 1;
+
+  const wizard = document.getElementById('credit-wizard');
+  wizard.querySelectorAll('.wizard__option-btn.selected').forEach(btn => {
+    btn.classList.remove('selected');
+  });
+  wizard.querySelectorAll('.wizard__input, .wizard__select').forEach(input => {
+    input.value = '';
+  });
+
+  const consent = document.getElementById('credit-consent');
+  if (consent) consent.checked = false;
+
+  const next1 = document.getElementById('credit-next-1');
+  if (next1) next1.disabled = true;
+  const next2 = document.getElementById('credit-next-2');
+  if (next2) next2.disabled = true;
+
+  creditGoToStep(1);
+  document.getElementById('application-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function submitCreditApplication() {
+  const contactMethod = document.getElementById('credit-contact-method').value;
+  const phone = document.getElementById('credit-phone').value;
+  const fullName = document.getElementById('credit-full-name').value.trim();
+  const consent = document.getElementById('credit-consent').checked;
+  const telegramUsername = document.getElementById('credit-telegram-username')?.value.trim();
+
+  if (!contactMethod) {
+    alert('Пожалуйста, выберите способ связи');
+    return;
+  }
+  if (!phone || phone.length < 17) {
+    alert('Пожалуйста, укажите номер телефона');
+    document.getElementById('credit-phone').focus();
+    return;
+  }
+  if (!fullName) {
+    alert('Пожалуйста, укажите ФИО');
+    document.getElementById('credit-full-name').focus();
+    return;
+  }
+  if (!consent) {
+    alert('Необходимо согласие на обработку персональных данных');
+    return;
+  }
+
+  creditFormData.contactMethod = contactMethod;
+  creditFormData.phone = phone;
+  creditFormData.fullName = fullName;
+  creditFormData.formType = 'credit';
+  if (contactMethod === 'Telegram' && telegramUsername) {
+    creditFormData.telegramUsername = telegramUsername;
+  }
+
+  const submitBtn = document.getElementById('credit-submit-btn');
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Отправка...';
+
+  try {
+    const response = await fetch('/.netlify/functions/send-telegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(creditFormData),
+    });
+
+    if (response.ok) {
+      creditGoToStep('c-success');
+    } else {
+      throw new Error('Server error');
+    }
+  } catch (error) {
+    console.error('Credit submit error:', error);
+    creditGoToStep('c-success');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+  }
+}
+
+// ---- INIT CREDIT PHONE MASK ----
+function initCreditPhoneMask() {
+  const phoneInput = document.getElementById('credit-phone');
+  if (!phoneInput) return;
+
+  phoneInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.startsWith('7') || value.startsWith('8')) {
+      value = value.substring(1);
+    }
+    let formatted = '+7';
+    if (value.length > 0) formatted += '(' + value.substring(0, 3);
+    if (value.length >= 3) formatted += ') ' + value.substring(3, 6);
+    if (value.length >= 6) formatted += '-' + value.substring(6, 8);
+    if (value.length >= 8) formatted += '-' + value.substring(8, 10);
+    e.target.value = formatted;
+  });
+
+  phoneInput.addEventListener('keydown', function(e) {
+    if ([8, 46, 9, 37, 39].includes(e.keyCode)) return;
+    if (e.ctrlKey || e.metaKey) return;
+    if (!/\d/.test(e.key)) e.preventDefault();
+  });
+
+  phoneInput.value = '+7';
+  phoneInput.addEventListener('focus', function() {
+    if (this.value === '') this.value = '+7';
+  });
 }
 
 // ---- MOBILE MENU ----
@@ -432,9 +652,11 @@ function initSmoothScroll() {
 document.addEventListener('DOMContentLoaded', () => {
   initCalculator();
   initPhoneMask();
+  initCreditPhoneMask();
   initPaymentInput();
   initBurgerMenu();
   initScrollAnimations();
   initSmoothScroll();
   updateProgress();
+  updateCreditProgress();
 });

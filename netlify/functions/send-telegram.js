@@ -69,22 +69,35 @@ exports.handler = async (event) => {
 
 function formatMessage(d) {
   let msg = '';
-  msg += '📋 <b>НОВАЯ ЗАЯВКА НА РЕФИНАНСИРОВАНИЕ</b>\n';
-  msg += '━━━━━━━━━━━━━━━━━━━━━\n\n';
 
-  msg += '💰 <b>Сумма:</b> ' + (d.loanAmount || '—') + '\n';
-  msg += '💳 <b>Платёж/мес:</b> ' + (d.monthlyPayment || '—') + ' ₽\n';
-  msg += '⏸ <b>Отсрочка:</b> ' + (d.deferral || '—') + '\n';
-  msg += '🚗 <b>Автокредит:</b> ' + (d.autoLoan || '—') + '\n';
+  if (d.formType === 'credit') {
+    // Credit application
+    msg += '💳 <b>НОВАЯ ЗАЯВКА НА КРЕДИТ</b>\n';
+    msg += '━━━━━━━━━━━━━━━━━━━━━\n\n';
 
-  if (d.property === 'Да') {
-    msg += '🏠 <b>Имущество:</b> Да (' + (d.propertyCount || '—') + ')\n';
+    msg += '🎯 <b>Цель:</b> ' + (d.creditPurpose || '—') + '\n';
+    msg += '💰 <b>Сумма:</b> ' + (d.creditAmount || '—') + '\n';
+    msg += '📍 <b>Регион:</b> ' + (d.region || '—') + '\n';
+    msg += '📊 <b>Вероятность одобрения:</b> ' + (d.approvalChance || '—') + '%\n';
   } else {
-    msg += '🏠 <b>Имущество:</b> Нет\n';
-  }
+    // Refinancing application
+    msg += '📋 <b>НОВАЯ ЗАЯВКА НА РЕФИНАНСИРОВАНИЕ</b>\n';
+    msg += '━━━━━━━━━━━━━━━━━━━━━\n\n';
 
-  msg += '📍 <b>Регион:</b> ' + (d.region || '—') + '\n';
-  msg += '📊 <b>Вероятность одобрения:</b> ' + (d.approvalChance || '—') + '%\n';
+    msg += '💰 <b>Сумма:</b> ' + (d.loanAmount || '—') + '\n';
+    msg += '💳 <b>Платёж/мес:</b> ' + (d.monthlyPayment || '—') + ' ₽\n';
+    msg += '⏸ <b>Отсрочка:</b> ' + (d.deferral || '—') + '\n';
+    msg += '🚗 <b>Автокредит:</b> ' + (d.autoLoan || '—') + '\n';
+
+    if (d.property === 'Да') {
+      msg += '🏠 <b>Имущество:</b> Да (' + (d.propertyCount || '—') + ')\n';
+    } else {
+      msg += '🏠 <b>Имущество:</b> Нет\n';
+    }
+
+    msg += '📍 <b>Регион:</b> ' + (d.region || '—') + '\n';
+    msg += '📊 <b>Вероятность одобрения:</b> ' + (d.approvalChance || '—') + '%\n';
+  }
 
   msg += '\n━━━━━━━━━━━━━━━━━━━━━\n\n';
 
