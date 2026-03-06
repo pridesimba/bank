@@ -67,7 +67,7 @@ function initCalculator() {
 // ---- WIZARD NAVIGATION ----
 function goToStep(step) {
   // Hide all steps
-  document.querySelectorAll('.wizard__step').forEach(el => {
+  document.getElementById('wizard').querySelectorAll('.wizard__step').forEach(el => {
     el.classList.remove('active');
     el.style.display = 'none';
   });
@@ -81,7 +81,7 @@ function goToStep(step) {
     currentStep = step;
   }
 
-  const target = document.querySelector(selector);
+  const target = document.getElementById('wizard').querySelector(selector);
   if (target) {
     target.style.display = 'block';
     // Trigger reflow for animation
@@ -478,9 +478,11 @@ function switchFormTab(tab) {
   if (tab === 'refinance') {
     refinanceWizard.style.display = 'block';
     creditWizard.style.display = 'none';
+    goToStep(1);
   } else {
     refinanceWizard.style.display = 'none';
     creditWizard.style.display = 'block';
+    creditGoToStep(1);
   }
 }
 

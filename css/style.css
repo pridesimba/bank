@@ -170,6 +170,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-weight: 800;
   font-size: 1.3rem;
   color: var(--gold);
+  margin-left: -12px;
 }
 
 .header__logo-img {
