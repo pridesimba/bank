@@ -24,9 +24,20 @@
   <noscript><div><img src="https://mc.yandex.ru/watch/108199650" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika counter -->
   <script>
-    setTimeout(function() {
-      window.location.href = "https://росфинкредит.рф";
-    }, 500);
+    // Ждём отправки данных в Метрику, затем редирект
+    var redirected = false;
+    function doRedirect() {
+      if (!redirected) {
+        redirected = true;
+        window.location.href = "https://росфинкредит.рф";
+      }
+    }
+    // Отправляем хит и редиректим по callback
+    ym(108199650, 'hit', location.href, {
+      callback: doRedirect
+    });
+    // Фолбэк: редирект через 2 секунды если callback не сработал
+    setTimeout(doRedirect, 2000);
   </script>
 </head>
 <body></body>
