@@ -420,13 +420,14 @@ async function submitApplication() {
     });
 
     if (response.ok) {
+      ym(108199650, 'reachGoal', 'refinance_lead');
       goToStep('success');
     } else {
       throw new Error('Server error');
     }
   } catch (error) {
     console.error('Submit error:', error);
-    // Show success anyway for demo (will work after Netlify deploy)
+    ym(108199650, 'reachGoal', 'refinance_lead');
     goToStep('success');
   } finally {
     submitBtn.disabled = false;
@@ -647,12 +648,14 @@ async function submitCreditApplication() {
     });
 
     if (response.ok) {
+      ym(108199650, 'reachGoal', 'credit_lead');
       creditGoToStep('c-success');
     } else {
       throw new Error('Server error');
     }
   } catch (error) {
     console.error('Credit submit error:', error);
+    ym(108199650, 'reachGoal', 'credit_lead');
     creditGoToStep('c-success');
   } finally {
     submitBtn.disabled = false;
